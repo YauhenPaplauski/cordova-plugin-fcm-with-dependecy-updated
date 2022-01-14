@@ -22,6 +22,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(token);
         Log.d(TAG, "New token: " + token);
         FCMPlugin.sendTokenRefresh(token);
+		try {
+			org.mbte.dialmyapp.messages.fcm.FcmHandler.onTokenReceived(getApplicationContext(), token, null, null);
+		} catch (Exception e) {
+			Log.d(TAG, "\t FcmHandler.onTokenReceived: " + e.getLocalizedMessage());
+		}
     }
 
     /**
@@ -59,6 +64,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         
         Log.d(TAG, "\tNotification Data: " + data.toString());
         FCMPlugin.sendPushPayload(data);
+		try {
+			org.mbte.dialmyapp.messages.fcm.FcmHandler.onNewMessageReceived(getApplicationContext(), remoteMessage.getData().toString());
+		} catch (Exception e) {
+			Log.d(TAG, "\t FcmHandler.onNewMessageReceived: " + e.getLocalizedMessage());
+		}
     }
     // [END receive_message]
 }
